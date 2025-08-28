@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Práctica: Clasificación de Elementos Representativos / Practice of Representative Elements</title>
+  <style>
+    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 6px; text-align: center; }
+    input[type="text"], select { width: 120px; }
+    .correct { background-color: #c8f7c5; }
+    .incorrect { background-color: #f7c5c5; }
+  </style>
+</head>
+<body>
+  <h2>Práctica de Elementos Representativos / Practice of Representative Elements</h2>
+  <label for="idioma">Idioma / Language: </label>
+  <select id="idioma" onchange="cambiarIdioma()">
+    <option value="es">Español</option>
+    <option value="en">English</option>
+  </select>
+  <button onclick="addRow()">Nueva fila / New Row</button>
+  <button onclick="checkAll()">Revisar todo / Check All</button>
+  <table id="table">
+    <thead>
+      <tr id="header">
+        <th>Nombre</th>
+        <th>Símbolo</th>
+        <th>Familia</th>
+        <th>Período</th>
+        <th>Tipo</th>
+        <th>Revisar</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    let idioma = "es";
+    const elements_es = [
+      {nombre: "Hidrógeno", simbolo: "H", familia: "No metal", periodo: 1, tipo: "No metal"},
+      {nombre: "Litio", simbolo: "Li", familia: "Alcalinos", periodo: 2, tipo: "Metal"},
+      {nombre: "Berilio", simbolo: "Be", familia: "Alcalinotérreos", periodo: 2, tipo: "Metal"},
+      {nombre: "Boro", simbolo: "B", familia: "Térreos", periodo: 2, tipo: "Metaloide"},
+      {nombre: "Carbono", simbolo: "C", familia: "Familia del Carbono", periodo: 2, tipo: "No metal"},
+      {nombre: "Nitrógeno", simbolo: "N", familia: "Familia del Nitrógeno", periodo: 2, tipo: "No metal"},
+      {nombre: "Oxígeno", simbolo: "O", familia: "Familia del Oxígeno", periodo: 2, tipo: "No metal"},
+      {nombre: "Flúor", simbolo: "F", familia: "Halógenos", periodo: 2, tipo: "No metal"},
+      {nombre: "Neón", simbolo: "Ne", familia: "Gases nobles", periodo: 2, tipo: "No metal"},
+      {nombre: "Sodio", simbolo: "Na", familia: "Alcalinos", periodo: 3, tipo: "Metal"},
+      {nombre: "Magnesio", simbolo: "Mg", familia: "Alcalinotérreos", periodo: 3, tipo: "Metal"},
+      {nombre: "Aluminio", simbolo: "Al", familia: "Térreos", periodo: 3, tipo: "Metal"},
+      {nombre: "Silicio", simbolo: "Si", familia: "Familia del Carbono", periodo: 3, tipo: "Metaloide"},
+      {nombre: "Fósforo", simbolo: "P", familia: "Familia del Nitrógeno", periodo: 3, tipo: "No metal"},
+      {nombre: "Azufre", simbolo: "S", familia: "Familia del Oxígeno", periodo: 3, tipo: "No metal"},
+      {nombre: "Cloro", simbolo: "Cl", familia: "Halógenos", periodo: 3, tipo: "No metal"},
+      {nombre: "Argón", simbolo: "Ar", familia: "Gases nobles", periodo: 3, tipo: "No metal"}
+    ];
+    const elements_en = [
+      {name: "Hydrogen", symbol: "H", family: "Non-metal", period: 1, type: "Non-metal"},
+      {name: "Lithium", symbol: "Li", family: "Alkali metals", period: 2, type: "Metal"},
+      {name: "Beryllium", symbol: "Be", family: "Alkaline earth metals", period: 2, type: "Metal"},
+      {name: "Boron", symbol: "B", family: "Boron family", period: 2, type: "Metalloid"},
+      {name: "Carbon", symbol: "C", family: "Carbon family", period: 2, type: "Non-metal"},
+      {name: "Nitrogen", symbol: "N", family: "Nitrogen family", period: 2, type: "Non-metal"},
+      {name: "Oxygen", symbol: "O", family: "Oxygen family", period: 2, type: "Non-metal"},
+      {name: "Fluorine", symbol: "F", family: "Halogens", period: 2, type: "Non-metal"},
+      {name: "Neon", symbol: "Ne", family: "Noble gases", period: 2, type: "Non-metal"},
+      {name: "Sodium", symbol: "Na", family: "Alkali metals", period: 3, type: "Metal"},
+      {name: "Magnesium", symbol: "Mg", family: "Alkaline earth metals", period: 3, type: "Metal"},
+      {name: "Aluminum", symbol: "Al", family: "Boron family", period: 3, type: "Metal"},
+      {name: "Silicon", symbol: "Si", family: "Carbon family", period: 3, type: "Metalloid"},
+      {name: "Phosphorus", symbol: "P", family: "Nitrogen family", period: 3, type: "Non-metal"},
+      {name: "Sulfur", symbol: "S", family: "Oxygen family", period: 3, type: "Non-metal"},
+      {name: "Chlorine", symbol: "Cl", family: "Halogens", period: 3, type: "Non-metal"},
+      {name: "Argon", symbol: "Ar", family: "Noble gases", period: 3, type: "Non-metal"}
+    ];
+
+    function cambiarIdioma(){
+      idioma = document.getElementById("idioma").value;
+      const header=document.getElementById("header");
+      if(idioma==="es"){
+        header.innerHTML="<th>Nombre</th><th>Símbolo</th><th>Familia</th><th>Período</th><th>Tipo</th><th>Revisar</th>";
+      } else {
+        header.innerHTML="<th>Name</th><th>Symbol</th><th>Family</th><th>Period</th><th>Type</th><th>Check</th>";
+      }
+    }
+
+    function addRow(){
+      const elements=(idioma==="es")?elements_es:elements_en;
+      const element=elements[Math.floor(Math.random()*elements.length)];
+      const tbody=document.querySelector("#table tbody");
+      const row=document.createElement("tr");
+      const fields=idioma==="es"?["nombre","simbolo","familia","periodo","tipo"]:["name","symbol","family","period","type"];
+      const hidden=[];
+      while(hidden.length<2){
+        const choice=fields[Math.floor(Math.random()*fields.length)];
+        if(!hidden.includes(choice)) hidden.push(choice);
+      }
+      row.innerHTML+=`<td>${hidden.includes(fields[0])?`<input type="text" data-correct="${element[fields[0]]}">`:element[fields[0]]}</td>`;
+      row.innerHTML+=`<td>${hidden.includes(fields[1])?`<input type="text" data-correct="${element[fields[1]]}">`:element[fields[1]]}</td>`;
+      row.innerHTML+=`<td>${hidden.includes(fields[2])?`<input type="text" data-correct="${element[fields[2]]}">`:element[fields[2]]}</td>`;
+      row.innerHTML+=`<td>${hidden.includes(fields[3])?`<input type="text" data-correct="${element[fields[3]]}">`:element[fields[3]]}</td>`;
+      row.innerHTML+=`<td>${hidden.includes(fields[4])?`<input type="text" data-correct="${element[fields[4]]}">`:element[fields[4]]}</td>`;
+      row.innerHTML+=`<td><button onclick="checkRow(this)">Revisar / Check</button></td>`;
+      tbody.appendChild(row);
+    }
+
+    function checkRow(button){
+      const row = button.parentNode.parentNode;
+      const inputs = row.querySelectorAll("input");
+      inputs.forEach(el=>{
+        const correcto = el.dataset.correct;
+        if(el.value.trim().toLowerCase() === correcto.toLowerCase()){
+          el.className = "correct";
+        } else {
+          el.className = "incorrect";
+        }
+      });
+    }
+
+    function checkAll(){
+      document.querySelectorAll("#table tbody button").forEach(btn => checkRow(btn));
+    }
+  </script>
+</body>
+</html>
